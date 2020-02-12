@@ -1,8 +1,8 @@
-# DateSamplers.jl
+# DateSelectors.jl
 
 ```@index
 ```
 
 ```@autodocs
-Modules = [DateSamplers]
+Modules = [DateSelectors]
 ```
