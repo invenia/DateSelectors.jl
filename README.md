@@ -1,20 +1,17 @@
 # DateSelectors
 
-[![Latest](https://img.shields.io/badge/docs-latest-blue.svg)](https://invenia.pages.invenia.ca/DateSelectors.jl/)
-[![Build Status](https://gitlab.invenia.ca/invenia/DateSelectors.jl/badges/master/build.svg)](https://gitlab.invenia.ca/invenia/DateSelectors.jl/commits/master)
-[![Coverage](https://gitlab.invenia.ca/invenia/DateSelectors.jl/badges/master/coverage.svg)](https://gitlab.invenia.ca/invenia/DateSelectors.jl/commits/master)
-
+[![Latest](https://img.shields.io/badge/docs-latest-blue.svg)](https://invenia.pages.invenia.ca/research/DateSelectors.jl/)
+[![Build Status](https://gitlab.invenia.ca/invenia/research/DateSelectors.jl/badges/master/build.svg)](https://gitlab.invenia.ca/invenia/research/DateSelectors.jl/commits/master)
+[![Coverage](https://gitlab.invenia.ca/invenia/research/DateSelectors.jl/badges/master/coverage.svg)](https://gitlab.invenia.ca/invenia/research/DateSelectors.jl/commits/master)
 
 # Usage
 
-DateSelectors simplify the separation of [non-contiguous dates](https://gitlab.invenia.ca/invenia/wiki/blob/ml-best-practice/research/ml-best-practice/glossary.md#contiguous-and-stratified-datasets) for testing models.
-To test on the first week in each month in a block of dates, the code would look something like this in the backrun script:
+`DateSelectors.jl` simplifies the partitioning of a collection of dates into non-contiguous validation and holdout sets in line with [our best practices](TODO add link) for [tuning hyper-parameters](https://gitlab.invenia.ca/invenia/research/sagemakersubmit) in [EIS](https://gitlab.invenia.ca/invenia/eis).
 
-```julia
-selector = PeriodicSelector(Month(1), Week(1))
-dates = partition(selector, args.start_date, args.end_date)
+The package exports the `partition` function, which assigns dates to the validation and holdout sets according to the `DateSelector`.
+The available `DateSelector`s are:
+1. `NoneSelector`: assigns all dates to the validation set.
+1. `RandomSelector`: randomly draws a subset of dates _without_ replacement.
+1. `PeriodicSelector`: draws contiguous subsets of days periodically from the collection.
 
-results = pmap(dates.test) do date
-    backrun_day(agent, client, date)
-end
-```
+See the [examples](https://invenia.pages.invenia.ca/Metrics.jl/examples.html) in the docs for more info.

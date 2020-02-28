@@ -1,10 +1,11 @@
 name = "DateSelectors"
 uuid = "c900ad91-5c7c-41b8-bce1-46b0264fae1d"
 authors = ["Invenia Technical Computing Corporation"]
-version = "0.0.1"
+version = "0.1.0"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+Intervals = "d8418881-c3e1-53bb-8760-2df7ec849ed5"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 
