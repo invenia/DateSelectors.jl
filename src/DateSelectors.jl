@@ -60,44 +60,31 @@ end
 """
     RandomSelector(
         num_holdout::Integer,
-        weights::AbstractWeights, Nothing}=nothing,
-        rng::AbstractRNG=Random.GLOBAL_RNG
-    )
-
-    RandomSelector(
-        num_holdout::Integer,
         seed::Integer,
         weights::Union{AbstractWeights, Nothing}=nothing,
-        rng::AbstractRNG=Random.GLOBAL_RNG
     )
 
 Determine holdout set by randomly subsampling `num_holdout` holdout dates without
-replacement using `rng` seeded with `seed`.
+replacement using the `GLOBAL_RNG` seeded with `seed`.
 
 The holdout dates will be sampled proportionally to the `weights` when they provided.
 
 !!!Note
-    It is recommend you provide the `seed` and/or a random number generator for reproducibility.
+    It is recommended you explicitly provide the `seed` for reproducibility and to
+    differentiate your generated datasets from other those of other users.
 """
 struct RandomSelector <: DateSelector
     num_holdout::Integer
+    seed::Integer
     weights::Union{AbstractWeights, Nothing}
-    rng::AbstractRNG
 
-    function RandomSelector(
-        num_holdout::Integer, weights=nothing, rng::AbstractRNG=Random.GLOBAL_RNG
-    )
-        return new(num_holdout, weights, rng)
+    function RandomSelector(num_holdout, seed=1, weights=nothing)
+        return new(num_holdout, seed, weights)
     end
 end
 
-function RandomSelector(
-    num_holdout::Integer,
-    seed::Integer,
-    weights::Union{AbstractWeights, Nothing}=nothing,
-    rng::AbstractRNG=Random.GLOBAL_RNG
-)
-    return RandomSelector(num_holdout, weights, Random.seed!(rng, seed))
+function RandomSelector(num_holdout::Integer, weights::Union{AbstractWeights, Nothing})
+    return RandomSelector(num_holdout, 1, weights)
 end
 
 """
@@ -142,7 +129,7 @@ function Iterators.partition(dates::StepRange{Date, Day}, s::RandomSelector)
     end
 
     holdout_days = _subsample(
-        s.rng,
+        Random.seed!(s.seed),
         dates,
         s.weights,
         s.num_holdout;
@@ -180,5 +167,7 @@ function _interval2daterange(dates::AbstractInterval{Date})
     ld = last(inclusivity(dates)) ? last(dates) : last(dates) - Day(1)
     return fd:Day(1):ld
 end
+
+include("deprecated.jl")
 
 end
