@@ -162,15 +162,21 @@ Random.seed!(1)
             @test sort(vcat(collect.(vcat(result...))...)) == date_range
             @test isempty(intersect(result...))
 
+            # Running partition twice should return the same result
+            result2 = partition(date_range, selector)
+            @test collect(result.validation) == collect(result2.validation)
+            @test collect(result.holdout) == collect(result2.holdout)
+
+            # Setting num_holdout = all days leaves the validation set empty
             validation, holdout = partition(date_range, RandomSelector(length(date_range)))
             @test isempty(validation)
             @test collect(holdout) == date_range
         end
 
         @testset "Set Seed" begin
-            r1 = partition(date_range, RandomSelector(3, 1))
+            r1 = partition(date_range, RandomSelector(3))
             r2 = partition(date_range, RandomSelector(3, 1))
-            r3 = partition(date_range, RandomSelector(3, nothing, Random.seed!(1)))
+            r3 = partition(date_range, RandomSelector(3, 1, nothing))
 
             # cannot directly equate NamedTuples of iterators
             @test collect(r1.validation) == collect(r2.validation) == collect(r3.validation)
@@ -183,9 +189,17 @@ Random.seed!(1)
 
         @testset "Set Weights" begin
             wv = Weights([zeros(29); 1:3])
+
             result = partition(date_range, RandomSelector(3, 1, wv))
             @test isequal(
                 collect(result.holdout),
+                [Date(2019, 1, 30), Date(2019, 1, 31), Date(2019, 2, 1)]
+            )
+
+            # Can set the weights but use default seed = 1 - should give same result
+            result2 = partition(date_range, RandomSelector(3, wv))
+            @test isequal(
+                collect(result2.holdout),
                 [Date(2019, 1, 30), Date(2019, 1, 31), Date(2019, 2, 1)]
             )
         end
@@ -261,5 +275,7 @@ Random.seed!(1)
             @test_throws MethodError partition(weekly_dates, selector)
         end
     end
+
+    include("deprecated.jl")
 
 end
