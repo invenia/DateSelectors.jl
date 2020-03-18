@@ -68,23 +68,15 @@ Determine holdout set by randomly subsampling `num_holdout` holdout dates withou
 replacement using the `GLOBAL_RNG` seeded with `seed`.
 
 The holdout dates will be sampled proportionally to the `weights` when they provided.
-
-!!!Note
-    It is recommended you explicitly provide the `seed` for reproducibility and to
-    differentiate your generated datasets from other those of other users.
 """
 struct RandomSelector <: DateSelector
     num_holdout::Integer
     seed::Integer
     weights::Union{AbstractWeights, Nothing}
 
-    function RandomSelector(num_holdout, seed=1, weights=nothing)
+    function RandomSelector(num_holdout, seed, weights=nothing)
         return new(num_holdout, seed, weights)
     end
-end
-
-function RandomSelector(num_holdout::Integer, weights::Union{AbstractWeights, Nothing})
-    return RandomSelector(num_holdout, 1, weights)
 end
 
 """
