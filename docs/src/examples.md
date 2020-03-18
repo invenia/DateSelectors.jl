@@ -22,7 +22,7 @@ collect(validation)
 The `RandomSelector` subsamples the collection of dates and assigns them to the holdout set.
 By default, the subsampling is performed uniformly but this can be changed by providing `weights` as positional argument.
 
-Here we are drawing 15 days while setting the `seed` to 1.
+Here we are drawing a hold out set of size 15 days while setting the `seed` to 1.
 
 ```@example dateselectors
 selector = RandomSelector(15, 1)
