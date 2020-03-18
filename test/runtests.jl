@@ -154,7 +154,7 @@ Random.seed!(1)
     @testset "RandomSelector" begin
 
         @testset "basic" begin
-            selector = RandomSelector(10)
+            selector = RandomSelector(10, 1)
             @test selector isa DateSelector
 
             result = partition(date_range, selector)
@@ -168,13 +168,13 @@ Random.seed!(1)
             @test collect(result.holdout) == collect(result2.holdout)
 
             # Setting num_holdout = all days leaves the validation set empty
-            validation, holdout = partition(date_range, RandomSelector(length(date_range)))
+            validation, holdout = partition(date_range, RandomSelector(length(date_range), 1))
             @test isempty(validation)
             @test collect(holdout) == date_range
         end
 
         @testset "Set Seed" begin
-            r1 = partition(date_range, RandomSelector(3))
+            r1 = partition(date_range, RandomSelector(3, 1))
             r2 = partition(date_range, RandomSelector(3, 1))
             r3 = partition(date_range, RandomSelector(3, 1, nothing))
 
@@ -196,8 +196,7 @@ Random.seed!(1)
                 [Date(2019, 1, 30), Date(2019, 1, 31), Date(2019, 2, 1)]
             )
 
-            # Can set the weights but use default seed = 1 - should give same result
-            result2 = partition(date_range, RandomSelector(3, wv))
+            result2 = partition(date_range, RandomSelector(3, 1, wv))
             @test isequal(
                 collect(result2.holdout),
                 [Date(2019, 1, 30), Date(2019, 1, 31), Date(2019, 2, 1)]
@@ -205,7 +204,7 @@ Random.seed!(1)
         end
 
         @testset "error if selecting more days than available" begin
-            @test_throws DomainError partition(date_range, RandomSelector(50))
+            @test_throws DomainError partition(date_range, RandomSelector(50, 1))
         end
 
     end
@@ -241,7 +240,7 @@ Random.seed!(1)
         selectors = (
             NoneSelector(),
             PeriodicSelector(Week(2), Week(1)),
-            RandomSelector(10)
+            RandomSelector(10, 1)
         )
 
         @testset "$(repr(selector))" for selector in selectors, dateset in datesets
