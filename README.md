@@ -14,4 +14,4 @@ The available `DateSelector`s are:
 1. `RandomSelector`: randomly draws a subset of dates _without_ replacement.
 1. `PeriodicSelector`: draws contiguous subsets of days periodically from the collection.
 
-See the [examples](https://invenia.pages.invenia.ca/Metrics.jl/examples.html) in the docs for more info.
+See the [examples](https://invenia.pages.invenia.ca/research/DateSelectors.jl/examples.html) in the docs for more info.
