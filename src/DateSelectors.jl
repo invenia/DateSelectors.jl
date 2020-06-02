@@ -11,7 +11,4 @@ include("common.jl")
 include("NoneSelector.jl")
 include("PeriodicSelector.jl")
 include("RandomSelector.jl")
-
-include("deprecated.jl")
-
 end
