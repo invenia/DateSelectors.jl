@@ -14,29 +14,29 @@
         @test result.validation == first(result)
         @test result.holdout == last(result)
 
-        @test result.validation isa Base.Generator
-        @test result.holdout isa Base.Generator
+        @test Base.isiterable(typeof(result.validation))
+        @test Base.isiterable(typeof(result.holdout))
 
-        @test collect(result.holdout) == holdout_dates
-        @test collect(result.validation) == val_dates
+        @test result.holdout == holdout_dates
+        @test result.validation == val_dates
     end
 
     @testset "single date" begin
         date = rand(date_range)
         result = DateSelectors._getdatesets(date_range, date)
 
-        @test collect(result.holdout) == [date]
-        @test .!any(in(result.holdout), result.validation)
-        @test sort(collect(union(result...))) == date_range
+        @test result.holdout == [date]
+        @test isempty(intersect(result...))
+        @test sort(union(result...)) == date_range
     end
 
     @testset "random partition" begin
         dates = rand(date_range, 10)
         result = DateSelectors._getdatesets(date_range, dates)
 
-        @test collect(result.holdout) != dates
-        @test collect(result.holdout) == sort(dates)
-        @test .!any(in(result.holdout), result.validation)
-        @test sort(collect(union(result...))) == date_range
+        @test result.holdout != dates
+        @test result.holdout == sort(dates)
+        @test isempty(intersect(result...))
+        @test sort(union(result...)) == date_range
     end
 end

@@ -14,7 +14,7 @@ selector = NoneSelector()
 
 validation, holdout = partition(date_range, selector)
 
-collect(validation)
+validation
 ```
 
 ## RandomSelector
@@ -31,7 +31,7 @@ selector = RandomSelector(42, 0.10, Day(3))
 
 validation, holdout = partition(date_range, selector)
 
-collect(validation)
+validation
 ```
 
 ## PeriodicSelector
@@ -49,7 +49,7 @@ selector = PeriodicSelector(Week(1), Day(2), Day(5))
 
 validation, holdout = partition(date_range, selector)
 
-collect(validation)
+validation
 ```
 
 We can verify that it returned what we expected:
@@ -74,7 +74,7 @@ date_range = Date(2018, 1, 1)..Date(2019, 3, 31)
 
 validation, holdout = partition(date_range, selector)
 
-collect(validation)
+validation
 ```
 
 as well as an `AbstractInterval`:
@@ -87,5 +87,5 @@ date_range = AnchoredInterval{Day(90), Date}(Date(2019, 1, 1))
 
 validation, holdout = partition(date_range, selector)
 
-collect(validation)
+validation
 ```

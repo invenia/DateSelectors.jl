@@ -7,6 +7,6 @@
     @test selector isa DateSelector
 
     validation, holdout = partition(date_range, selector)
-    @test collect(validation) == date_range
+    @test validation == date_range
     @test isempty(holdout)
 end

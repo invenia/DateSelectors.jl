@@ -27,8 +27,8 @@ Construct the NamedTuple of iterators for the validation and holdout date sets.
 """
 function _getdatesets(all_dates, holdout_dates)
     return (
-        validation=(vd for vd in sort(setdiff(all_dates, holdout_dates))),
-        holdout=(hd for hd in sort(holdout_dates))
+        validation=sort(setdiff(all_dates, holdout_dates)),
+        holdout=sort(holdout_dates)
     )
 end
 

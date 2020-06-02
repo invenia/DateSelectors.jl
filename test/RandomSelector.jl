@@ -42,8 +42,8 @@
 
         # Running partition twice should return the same result
         result2 = partition(date_range, selector)
-        @test collect(result.validation) == collect(result2.validation)
-        @test collect(result.holdout) == collect(result2.holdout)
+        @test result.validation == result2.validation
+        @test result.holdout == result2.holdout
 
         @testset "holdout fraction" begin
             # Setting holdout_fraction 1 all days leaves the validation set empty
@@ -65,7 +65,6 @@
 
 
             for subset in result
-                subset = collect(subset)
                 # at vary least the first 3 items must be from same block
                 @test subset[2] == subset[1] + Day(1)
                 @test subset[3] == subset[1] + Day(2)
@@ -97,10 +96,7 @@
         # cannot directly equate NamedTuples of iterators
         @test collect(r1.validation) == collect(r2.validation) == collect(r3.validation)
         @test collect(r1.holdout) == collect(r2.holdout) == collect(r3.holdout)
-        @test isequal(
-            collect(r1.holdout),
-            [Date(2019, 1, 1), Date(2019, 1, 5), Date(2019, 1, 30)]
-        )
+        @test isequal(r1.holdout, [Date(2019, 1, 1), Date(2019, 1, 5), Date(2019, 1, 30)])
     end
 
     @testset "Different date inputs" begin
@@ -113,8 +109,8 @@
             AnchoredInterval{Day(31), Date}(st, true, true)
         )
             result = partition(d, RandomSelector(42))
-            @test collect(result.validation) == collect(exp.validation)
-            @test collect(result.holdout) == collect(exp.holdout)
+            @test result.validation == exp.validation
+            @test result.holdout == exp.holdout
         end
     end
 
