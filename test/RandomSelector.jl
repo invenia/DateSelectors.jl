@@ -2,7 +2,7 @@
     st = Date(2019, 1, 1)
     ed = Date(2019, 2, 1)
     date_range = st:Day(1):ed
-    
+
     @testset "construction" begin
         wv = Weights([zeros(29); 1:3])
 
@@ -157,5 +157,18 @@
             @test collect(result.validation) == collect(exp.validation)
             @test collect(result.holdout) == collect(exp.holdout)
         end
+    end
+
+    @testset "Invarient to date_range (seed $seed)" for seed in (1, 42, 24601)
+        holdout_size = 100  # can vary with holdout_size (and seed)
+        initial_range = Date(2019, 1, 1):Day(1):Date(2020, 1, 31)  # 1 year total range
+
+        initial_sets = map(Set, partition(initial_range, RandomSelector(holdout_size, seed)))
+
+        later_range = initial_range + Day(20)  # 20 days later.
+        later_sets = map(Set, partition(later_range, RandomSelector(holdout_size, seed)))
+
+        @test initial_sets.holdout ∩ later_sets.validation == Set()
+        @test initial_sets.validation ∩ later_sets.holdout == Set()
     end
 end

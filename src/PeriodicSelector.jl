@@ -38,20 +38,10 @@ end
 
 
 function Iterators.partition(dates::StepRange{Date, Day}, s::PeriodicSelector)
-    sd, ed = extrema(dates)
-
-    # The order from FERC that created the US ISO's (the first of their kind) came in 1999
-    # thus seems safe to start in 1900, which has the convient feature of
-    # starting on a Monday
-    beginning_of_time = Date(1900)
-    initial_time = beginning_of_time + s.offset
-    sd < initial_time && throw(DomainError(
-        sd,
-        "PeriodicSelector with offset $(s.offset) cannot be used before $(initial_time)",
-    ))
+    initial_time = _determine_initial_time(s, dates)
 
     #NOTE: you might be thinking that this process that actually checks all dates starting
-    # from year 1899 is too slow and we should do something smart with modulo arithmetic
+    # from year 1900 is too slow and we should do something smart with modulo arithmetic
     # but for current decades this takes thousands of a second and even for year 9000
     # is still is well under 1/4 second. so keeping it simple
 

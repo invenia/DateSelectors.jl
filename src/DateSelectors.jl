@@ -4,7 +4,6 @@ using Base.Iterators
 using Dates
 using Intervals
 using Random
-using StatsBase: sample, AbstractWeights
 
 export DateSelector, NoneSelector, PeriodicSelector, RandomSelector, partition
 

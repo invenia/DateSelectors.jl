@@ -37,7 +37,7 @@ _getdatesets(all_dates, date::Date) = _getdatesets(all_dates, [date])
 """
     _interval2daterange(dates::AbstractInterval{Day}) -> StepRange{Date, Day}
 
-Helper function to turn an AbstrctInterval into a StepRange taking the inclusivity into
+Helper function to turn an AbstractInterval into a StepRange taking the inclusivity into
 account.
 """
 function _interval2daterange(dates::AbstractInterval{Date})
