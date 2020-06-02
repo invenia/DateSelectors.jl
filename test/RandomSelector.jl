@@ -76,6 +76,19 @@
         end
     end
 
+    @testset "Right holdout fraction RandomSelector($seed, $holdout_fraction, $block_size)" for
+        seed in (1, 42),
+        holdout_fraction in (1//2, 0.1, 0.9, 0.7),
+        block_size in (Day(1), Day(2), Week(1), Week(2))
+
+
+        selector = RandomSelector(seed, holdout_fraction, block_size)
+        range = Date(2000, 1, 1):Day(1):Date(2010, 1, 31)  # 10 year total range
+
+        r = partition(range, selector)
+        @test length(r.holdout)/length(range) ≈ holdout_fraction atol=0.05
+    end
+
     @testset "Set Seed (protects against julia RNG changing)" begin
         r1 = partition(date_range, RandomSelector(42, 1//5))
         r2 = partition(date_range, RandomSelector(42, 1//5))
@@ -104,6 +117,7 @@
             @test collect(result.holdout) == collect(exp.holdout)
         end
     end
+
 
     @testset "Invarient to date_range RandomSelector($seed, $holdout_fraction, $block_size, $offset))" for
         seed in (1, 42),
