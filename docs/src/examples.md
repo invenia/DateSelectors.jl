@@ -34,14 +34,16 @@ collect(validation)
 
 ## PeriodicSelector
 
-The `PeriodicSelector` assigns holdout dates by taking a `stride` once per `period` starting from the start date + `offset`.
+The `PeriodicSelector` assigns holdout dates by taking a `stride` once per `period`.
+Where in the period the holdout `stide` is taken from is determined by the `offset`.
+The offset is relative to _Monday 1st Jan 1900_.
 
 In this example - for whatever reason - we want to assign weekdays as validation days and weekends as holdout days.
-Therefore, our `period` is `Week(1)` and `stride` is `Day(2)`.
-However, 2019-1-1 is a Tuesday so we must first `offset` by `Day(4)` to start selecting on the first Saturday.
+Therefore, our `period` is `Week(1)` and `stride` is `Day(2)`, because out of every week we want to keep 2 days in the holdout.
+Now since, we need to start selecting on the Saturday, so we must first `offset` by `Day(5)` to because zero offset corresponds to a Monday.
 
 ```@example dateselectors
-selector = PeriodicSelector(Week(1), Day(2), Day(4))
+selector = PeriodicSelector(Week(1), Day(2), Day(5))
 
 validation, holdout = partition(date_range, selector)
 

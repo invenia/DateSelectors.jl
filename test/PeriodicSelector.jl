@@ -65,12 +65,28 @@
         @test collect(result.validation) == expected_validation
     end
 
-    @testset "Weekends as holdout" begin
-        selector = PeriodicSelector(Week(1), Day(2), Day(5))
-        validation, holdout = partition(date_range, selector)
+    @testset "Day of week" begin
+        @testset "Weekends as holdout" begin
+            selector = PeriodicSelector(Week(1), Day(2), Day(5))
+            validation, holdout = partition(date_range, selector)
 
-        @test sort(unique(dayname.(validation))) == ["Friday", "Monday", "Thursday", "Tuesday", "Wednesday"]
-        @test sort(unique(dayname.(holdout))) == ["Saturday", "Sunday"]
+            @test isequal(
+                sort(unique(dayname.(validation))),
+                ["Friday", "Monday", "Thursday", "Tuesday", "Wednesday"]
+            )
+            @test sort(unique(dayname.(holdout))) == ["Saturday", "Sunday"]
+        end
+
+        @testset "Week days as holdout" begin
+            selector = PeriodicSelector(Week(1), Day(5))
+            validation, holdout = partition(date_range, selector)
+
+            @test sort(unique(dayname.(validation))) == ["Saturday", "Sunday"]
+            @test isequal(
+                sort(unique(dayname.(holdout))),
+                ["Friday", "Monday", "Thursday", "Tuesday", "Wednesday"]
+            )
+        end
     end
 
     @testset "stride, offset, period wrong domain" begin
