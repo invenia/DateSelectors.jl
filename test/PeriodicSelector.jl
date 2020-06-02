@@ -94,8 +94,8 @@
         @test_throws DomainError PeriodicSelector(Day(7), Day(0))
 
         @test_throws DomainError PeriodicSelector(Hour(24))
-        @test_throws DomainError PeriodicSelector(Day(7), Hour(48))
-        @test_throws DomainError PeriodicSelector(Day(7), Day(3), Hour(72))
+        @test_throws MethodError PeriodicSelector(Day(7), Hour(48))
+        @test_throws MethodError PeriodicSelector(Day(7), Day(3), Hour(72))
     end
 
     @testset "errors if stride > period" begin
@@ -106,7 +106,7 @@
     @testset "Invarient to date_range (period $period, stride $stride)" for
         (period, stride) in ((Week(2), Week(1)), (Day(30), Day(10)), (Day(5), Day(2)))
 
-        @testset "offset $offset" for offset in Day.((0, 1, 2, 3))
+         @testset "offset $offset" for offset in Day.((0, 1, 2, 3))
             selector = PeriodicSelector(period, stride, offset)
             initial_range = Date(2029, 1, 1):Day(1):Date(2030, 1, 31)
             initial_sets = map(Set, partition(initial_range, selector))

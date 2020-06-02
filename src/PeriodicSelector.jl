@@ -14,17 +14,13 @@ Note: this cannot be actually used to select days earlier than `offset` after
 1st Jan 1900.
 """
 struct PeriodicSelector <: DateSelector
-    period::Period
-    stride::Period
-    offset::Period
+    period::DatePeriod
+    stride::DatePeriod
+    offset::DatePeriod
 
-    function PeriodicSelector(period::Period, stride::Period=Day(1), offset::Period=Day(0))
+    function PeriodicSelector(period, stride=Day(1), offset=Day(0))
         period ≥ Day(2) || throw(DomainError(period, "period must be at least 2 Days."))
         stride ≥ Day(1) || throw(DomainError(stride, "stride must be at least 1 Day."))
-
-        if any(isa.([period, stride, offset], Ref(Hour)))
-            throw(DomainError("period, stride, and offset cannot be expressed in Hours."))
-        end
 
         if Day(stride) > Day(period)
             throw(ArgumentError(
@@ -39,6 +35,7 @@ end
 
 function Iterators.partition(dates::StepRange{Date, Day}, s::PeriodicSelector)
     initial_time = _determine_initial_time(s, dates)
+    sd, ed = extrema(dates)
 
     #NOTE: you might be thinking that this process that actually checks all dates starting
     # from year 1900 is too slow and we should do something smart with modulo arithmetic
@@ -46,7 +43,6 @@ function Iterators.partition(dates::StepRange{Date, Day}, s::PeriodicSelector)
     # is still is well under 1/4 second. so keeping it simple
 
     holdout_dates = Date[]
-    #TODO: in future we want to remove the assumption of a 1 day interval
     curr_window = initial_time:step(dates):(initial_time + s.stride - step(dates))
     while first(curr_window) <= ed
         # optimization: only creating holdout window if intersect not empty

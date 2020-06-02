@@ -1,11 +1,5 @@
-
 """
-    RandomSelector(
-        holdout_fraction::Real,
-        block_size::Period,
-        seed::Integer,
-        offset::Period=Day(0)
-    )
+    RandomSelector(seed, holdout_fraction=1//2, block_size=Day(1), offset=Day(0))
 
 Determine holdout set by randomly subsampling `holdout_blocks` contiguous blocks of size
 `block_size` of holdout dates without replacement using the `GLOBAL_RNG` seeded with `seed`.
@@ -20,23 +14,32 @@ Note that at the boundries of the partitioned dates the blocks may not be up to
 `block_size` if they go over the edge -- this is infact the common case.
 """
 struct RandomSelector <: DateSelector
+    seed::Int
     holdout_fraction::Real
-    block_size::Period
-    offset::Period
-    seed::Integer
+    block_size::DatePeriod
+    offset::DatePeriod
+
+    function RandomSelector(seed, holdout_fraction=1//2, block_size=Day(1), offset=Day(0))
+        if !(0 <= holdout_fraction <= 1)
+            throw(DomainError(
+                holdout_fraction,
+                "holdout fraction must be between 0 and 1 (inclusive)"
+            ))
+        end
+        if block_size < Day(1)
+            throw(DomainError(block_size, "block_size must be at least 1 day."))
+        end
+        return new(seed, holdout_fraction, block_size, offset)
+    end
 end
 
 function Iterators.partition(dates::StepRange{Date, Day}, s::RandomSelector)
-    if !(0 <= s.holdout_fraction <= 1)
-        throw(DomainError(s.holdout_fraction, "holdout fraction must be between 0 and 1 (inclusive)"))
-    end
-    rng = MersenneTwister(s.seed)
     sd, ed = extrema(dates)
 
-    initial_time = _determine_initial_time(s, dates)
-
+    rng = MersenneTwister(s.seed)
 
     holdout_dates = Date[]
+    initial_time = _determine_initial_time(s, dates)
     curr_window = initial_time:step(dates):(initial_time + s.block_size - step(dates))
     while first(curr_window) <= ed
         # Important: we must generate a random number for every block even before the start
@@ -49,6 +52,7 @@ function Iterators.partition(dates::StepRange{Date, Day}, s::RandomSelector)
             if r < s.holdout_fraction
                 curr_active_window = curr_window ∩ dates  # handle being near boundries
                 append!(holdout_dates, curr_active_window)
+            end
         end
         curr_window = curr_window .+ s.block_size
     end

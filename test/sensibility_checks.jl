@@ -5,7 +5,6 @@
 
         datesets = (
             st:Day(1):ed,
-            st:Day(2):ed,
             st..ed,
             AnchoredInterval{Day(365), Date}(st),
         )
@@ -13,7 +12,7 @@
         selectors = (
             NoneSelector(),
             PeriodicSelector(Week(2), Week(1)),
-            RandomSelector(4, 10, 1),
+            RandomSelector(42),
         )
 
         @testset "$(repr(selector))" for selector in selectors, dateset in datesets
@@ -45,7 +44,7 @@
         for selector in (
             NoneSelector(),
             PeriodicSelector(Week(2), Week(1)),
-            RandomSelector(1, 2, 1),
+            RandomSelector(42),
         )
             @test_throws MethodError partition(weekly_dates, selector)
         end

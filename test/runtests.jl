@@ -2,7 +2,6 @@ using DateSelectors
 using Dates
 using Intervals
 using Random
-using StatsBase: Weights, sample
 using Test
 
 Random.seed!(1)
@@ -14,5 +13,4 @@ Random.seed!(1)
     include("RandomSelector.jl")
 
     include("sensibility_checks.jl")
-    include("deprecated.jl")
 end
