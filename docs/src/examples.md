@@ -24,7 +24,7 @@ By default, the subsampling is performed uniformly but this can be changed by pr
 
 Here we use a seed of `42`
 to partition 10% of the data into the holdout set,
-in blocks sized as multiples of 3 days
+in 3-day blocks, some of which may be contiguous.
 
 ```@example dateselectors
 selector = RandomSelector(42, 0.10, Day(3))
