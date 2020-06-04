@@ -10,7 +10,7 @@ It is given as a offset relative to _Monday 1st Jan 1900_.
 For example, with the default offset of `Day(0)`, and if using a `Week(1)` `block_size`,
 then every block will start on a Monday, and will go for 1 or more weeks from there.
 
-Note that at the boundries of the partitioned dates the blocks may not be up to
+Note that at the boundries of the partitioned dates the blocks may not be of size
 `block_size` if they go over the edge -- this is infact the common case.
 """
 struct RandomSelector <: DateSelector
