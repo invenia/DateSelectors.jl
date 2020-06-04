@@ -9,16 +9,16 @@
         @test selector isa DateSelector
 
         result = partition(date_range, selector)
-        @test sort(vcat(collect.(vcat(result...))...)) == date_range
+        @test sort(vcat(result...)) == date_range
         @test isempty(intersect(result...))
 
-        @test all(isequal(Week(1)), diff(collect(result.holdout)))
+        @test all(isequal(Week(1)), diff(result.holdout))
     end
 
     @testset "2 week period, 5 day stride" begin
         selector = PeriodicSelector(Week(2), Day(5))
         result = partition(date_range, selector)
-        @test sort(vcat(collect.(vcat(result...))...)) == date_range
+        @test sort(vcat(result...)) == date_range
         @test isempty(intersect(result...))
 
         expected_holdout = [
@@ -26,18 +26,18 @@
             st + Week(2):Day(1):st + Week(2) + Day(4)...,
             st + Week(4):Day(1):st + Week(4) + Day(3)...,
         ]
-        @test diff(collect(result.holdout)) == Day.([1, 1, 1, 1, 10, 1, 1, 1, 1])
+        @test diff(result.holdout) == Day.([1, 1, 1, 1, 10, 1, 1, 1, 1])
     end
 
     @testset "1 week period, 1 day stride, 2 day offset" begin
         selector = PeriodicSelector(Week(1), Day(1), Day(2))
 
         result = partition(date_range, selector)
-        @test sort(vcat(collect.(vcat(result...))...)) == date_range
+        @test sort(vcat(result...)) == date_range
         @test isempty(intersect(result...))
 
         expected_holdout = [st+Day(1):Week(1):ed...]
-        @test collect(result.holdout) == expected_holdout
+        @test result.holdout == expected_holdout
     end
 
     @testset "BiWeekly" begin
@@ -61,8 +61,8 @@
             st1+Week(3):Day(1):st1+Week(4)-Day(1)...,
         ]
 
-        @test collect(result.holdout) == expected_holdout
-        @test collect(result.validation) == expected_validation
+        @test result.holdout == expected_holdout
+        @test result.validation == expected_validation
     end
 
     @testset "Day of week" begin
