@@ -1,6 +1,6 @@
 
 """
-    PeriodicSelector(period::Period, stride::Period=Day(1), offset::Period=Day(0))
+    PeriodicSelector(period::DatePeriod, stride::DatePeriod=Day(1), offset::DatePeriod=Day(0))
 
 Assign holdout dates by taking a set of size `stride` once per `period`.
 The offset is relative to _Monday 1st Jan 1900_, and controls when the selected section starts.
