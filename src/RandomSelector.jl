@@ -2,7 +2,7 @@
     RandomSelector(seed, holdout_fraction=1//2, block_size=Day(1), offset=Day(0))
 
 Determine holdout set by randomly subsampling contiguous blocks of size `block_size` 
-without replacement using the `GLOBAL_RNG` seeded with `seed`.
+without replacement using a `MersenneTwister` seeded with `seed`.
 The probability of any given block being in the holdout set is given by `holdout_fraction`.
 
 The `offset` is rarely needed, but is used to control block boundries.
