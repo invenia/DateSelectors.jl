@@ -1,7 +1,7 @@
 name = "DateSelectors"
 uuid = "c900ad91-5c7c-41b8-bce1-46b0264fae1d"
 authors = ["Invenia Technical Computing Corporation"]
-version = "0.4.0-DEV"
+version = "0.4.0"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
