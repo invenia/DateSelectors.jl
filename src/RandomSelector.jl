@@ -1,7 +1,7 @@
 """
     RandomSelector(seed, holdout_fraction=1//2, block_size=Day(1), offset=Day(0))
 
-Determine holdout set by randomly subsampling contiguous blocks of size `block_size` 
+Determine holdout set by randomly subsampling contiguous blocks of size `block_size`
 without replacement using a `MersenneTwister` seeded with `seed`.
 The probability of any given block being in the holdout set is given by `holdout_fraction`.
 
@@ -39,7 +39,7 @@ function Iterators.partition(dates::StepRange{Date, Day}, s::RandomSelector)
     rng = MersenneTwister(s.seed)
 
     holdout_dates = Date[]
-    initial_time = _determine_initial_time(s, dates)
+    initial_time = _initial_date(s, dates)
     curr_window = initial_time:step(dates):(initial_time + s.block_size - step(dates))
     while first(curr_window) <= ed
         # Important: we must generate a random number for every block even before the start

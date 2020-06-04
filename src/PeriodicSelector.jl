@@ -34,7 +34,7 @@ end
 
 
 function Iterators.partition(dates::StepRange{Date, Day}, s::PeriodicSelector)
-    initial_time = _determine_initial_time(s, dates)
+    initial_time = _initial_date(s, dates)
     sd, ed = extrema(dates)
 
     #NOTE: you might be thinking that this process that actually checks all dates starting
