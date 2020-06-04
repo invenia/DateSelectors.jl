@@ -49,8 +49,9 @@ end
 """
     _determine_initial_time(s::S, dates) where S<: DateSelector
 
-Determines when we start counting from when breaking `dates` up into blocks.
-Checks that that initial time is valid for the given `dates`.
+Determine the initial date from when we start breaking `dates` up into blocks and 
+check that it is valid for the given `dates`, .e.g. occurs _before_ our desired 
+date range begins.
 """
 function _determine_initial_time(s::S, dates) where S<: DateSelector
     sd, ed = extrema(dates)
