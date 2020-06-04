@@ -7,7 +7,6 @@ uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 deps = ["Dates", "Intervals", "Random"]
 path = ".."
 uuid = "c900ad91-5c7c-41b8-bce1-46b0264fae1d"
-version = "0.4.0-DEV"
 
 [[Dates]]
 deps = ["Printf"]
