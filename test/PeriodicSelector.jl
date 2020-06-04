@@ -94,8 +94,8 @@
         @test_throws DomainError PeriodicSelector(Day(7), Day(0))
 
         @test_throws DomainError PeriodicSelector(Hour(24))
-        @test_throws DomainError PeriodicSelector(Day(7), Hour(48))
-        @test_throws DomainError PeriodicSelector(Day(7), Day(3), Hour(72))
+        @test_throws MethodError PeriodicSelector(Day(7), Hour(48))
+        @test_throws MethodError PeriodicSelector(Day(7), Day(3), Hour(72))
     end
 
     @testset "errors if stride > period" begin

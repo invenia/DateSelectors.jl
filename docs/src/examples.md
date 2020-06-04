@@ -22,10 +22,12 @@ collect(validation)
 The `RandomSelector` subsamples the collection of dates and assigns them to the holdout set.
 By default, the subsampling is performed uniformly but this can be changed by providing `weights` as positional argument.
 
-Here we are drawing a hold out set of size 15 days while setting the `seed` to 1.
+Here we use a seed of `42`
+to partition 10% of the data into the holdout set,
+in 3-day blocks, some of which may be contiguous.
 
 ```@example dateselectors
-selector = RandomSelector(15, 1)
+selector = RandomSelector(42, 0.10, Day(3))
 
 validation, holdout = partition(date_range, selector)
 

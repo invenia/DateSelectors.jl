@@ -1,6 +1,6 @@
 
 """
-    PeriodicSelector(period::Period, stride::Period=Day(1), offset::Period=Day(0))
+    PeriodicSelector(period::DatePeriod, stride::DatePeriod=Day(1), offset::DatePeriod=Day(0))
 
 Assign holdout dates by taking a set of size `stride` once per `period`.
 The offset is relative to _Monday 1st Jan 1900_, and controls when the selected section starts.
@@ -14,17 +14,13 @@ Note: this cannot be actually used to select days earlier than `offset` after
 1st Jan 1900.
 """
 struct PeriodicSelector <: DateSelector
-    period::Period
-    stride::Period
-    offset::Period
+    period::DatePeriod
+    stride::DatePeriod
+    offset::DatePeriod
 
-    function PeriodicSelector(period::Period, stride::Period=Day(1), offset::Period=Day(0))
+    function PeriodicSelector(period, stride=Day(1), offset=Day(0))
         period ≥ Day(2) || throw(DomainError(period, "period must be at least 2 Days."))
         stride ≥ Day(1) || throw(DomainError(stride, "stride must be at least 1 Day."))
-
-        if any(isa.([period, stride, offset], Ref(Hour)))
-            throw(DomainError("period, stride, and offset cannot be expressed in Hours."))
-        end
 
         if Day(stride) > Day(period)
             throw(ArgumentError(
@@ -38,25 +34,15 @@ end
 
 
 function Iterators.partition(dates::StepRange{Date, Day}, s::PeriodicSelector)
+    initial_time = _initial_date(s, dates)
     sd, ed = extrema(dates)
 
-    # The order from FERC that created the US ISO's (the first of their kind) came in 1999
-    # thus seems safe to start in 1900, which has the convient feature of
-    # starting on a Monday
-    beginning_of_time = Date(1900)
-    initial_time = beginning_of_time + s.offset
-    sd < initial_time && throw(DomainError(
-        sd,
-        "PeriodicSelector with offset $(s.offset) cannot be used before $(initial_time)",
-    ))
-
     #NOTE: you might be thinking that this process that actually checks all dates starting
-    # from year 1899 is too slow and we should do something smart with modulo arithmetic
+    # from year 1900 is too slow and we should do something smart with modulo arithmetic
     # but for current decades this takes thousands of a second and even for year 9000
     # is still is well under 1/4 second. so keeping it simple
 
     holdout_dates = Date[]
-    #TODO: in future we want to remove the assumption of a 1 day interval
     curr_window = initial_time:step(dates):(initial_time + s.stride - step(dates))
     while first(curr_window) <= ed
         # optimization: only creating holdout window if intersect not empty

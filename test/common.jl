@@ -22,7 +22,7 @@
     end
 
     @testset "single date" begin
-        date = sample(date_range)
+        date = rand(date_range)
         result = DateSelectors._getdatesets(date_range, date)
 
         @test collect(result.holdout) == [date]
@@ -31,7 +31,7 @@
     end
 
     @testset "random partition" begin
-        dates = sample(date_range, 10)
+        dates = rand(date_range, 10)
         result = DateSelectors._getdatesets(date_range, dates)
 
         @test collect(result.holdout) != dates
