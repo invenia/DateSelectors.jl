@@ -1,3 +1,4 @@
+
 # Examples
 
 ## NoneSelector
@@ -19,12 +20,14 @@ validation
 
 ## RandomSelector
 
-The `RandomSelector` subsamples the collection of dates and assigns them to the holdout set.
-By default, the subsampling is performed uniformly but this can be changed by providing `weights` as positional argument.
+The `RandomSelector` uniformly subsamples the collection of dates and assigns them to the holdout set.
 
-Here we use a seed of `42`
-to partition 10% of the data into the holdout set,
+Here we use a seed of `42` to uniformly sample from the  date range with probability 10% into the holdout set,
 in 3-day blocks, some of which may be contiguous.
+Note that for a given seed and date range the portion in the holdout set may not be exactly 10% as it is a random sample.
+
+The selection, while random, is fully determined by the `RandomSelector` object and is invariant on the date range.
+That is to say if one has two distinct but overlapping date ranges, and uses the same `RandomSelector` object, then the overlapping days will consistently be placed into either holdout or validation in both.
 
 ```@example dateselectors
 selector = RandomSelector(42, 0.10, Day(3))
@@ -37,12 +40,15 @@ validation
 ## PeriodicSelector
 
 The `PeriodicSelector` assigns holdout dates by taking a `stride` once per `period`.
-Where in the period the holdout `stide` is taken from is determined by the `offset`.
+Where in the period the holdout `stride` is taken from is determined by the `offset`.
 The offset is relative to _Monday 1st Jan 1900_.
+
+As the stride start location is relative to a fixed point rather than to the date range, this means that the selection, is fully determined by the `PeriodicSelector` object and is invariant on the date range.
+That is to say if one has two distinct but overlapping date ranges, and uses the same `PeriodicSelector` object, then the overlapping days will consistently be placed into either holdout or validation in both.
 
 In this example - for whatever reason - we want to assign weekdays as validation days and weekends as holdout days.
 Therefore, our `period` is `Week(1)` and `stride` is `Day(2)`, because out of every week we want to keep 2 days in the holdout.
-Now since, we need to start selecting on the Saturday, so we must first `offset` by `Day(5)` to because zero offset corresponds to a Monday.
+Now, since we need to start selecting on the Saturday, we must first `offset` by `Day(5)` because zero offset corresponds to a Monday.
 
 ```@example dateselectors
 selector = PeriodicSelector(Week(1), Day(2), Day(5))
