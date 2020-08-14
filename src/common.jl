@@ -41,10 +41,17 @@ Helper function to turn an AbstractInterval into a StepRange taking the inclusiv
 account.
 """
 function _interval2daterange(dates::AbstractInterval{Date})
-    fd = first(inclusivity(dates)) ? first(dates) : first(dates) + Day(1)
-    ld = last(inclusivity(dates)) ? last(dates) : last(dates) - Day(1)
+    fd = _firstdate(dates)
+    ld =_lastdate(dates)
     return fd:Day(1):ld
 end
+
+# TODO: remove this once https://github.com/invenia/Intervals.jl/issues/137
+# is addressed.
+_firstdate(dates::AbstractInterval{Date,Closed}) = first(dates)
+_firstdate(dates::AbstractInterval{Date,Open}) = first(dates) + Day(1)
+_lastdate(dates::AbstractInterval{Date,<:Bound,Closed}) = last(dates)
+_lastdate(dates::AbstractInterval{Date,<:Bound,Open}) = last(dates) - Day(1)
 
 """
     _initial_date(s::S, dates) where S<: DateSelector
@@ -65,4 +72,28 @@ function _initial_date(s::S, dates) where S<: DateSelector
         "$S with offset $(s.offset) cannot be used before $(initial_time)",
     ))
     return initial_time
+end
+
+function Base.parse(DT::Type{<:DateSelector}, s::AbstractString)
+    expr = Meta.parse(s)
+
+    if expr isa Expr && expr.head == :call && isdefined(@__MODULE__, expr.args[1])
+        T = getfield(@__MODULE__, expr.args[1])
+        T isa Type && T <: DT && return eval(expr)
+    end
+
+    throw(ArgumentError("Could not parse \"$s\" as a `$DT`"))
+end
+
+if VERSION < v"1.5"
+    function Base.show(io::IO, s::S) where S<:DateSelector
+        args = _stringarg.(getfield.(Ref(s), fieldnames(S)))
+
+        print(io, "$S($(join(args, ", ")))")
+    end
+
+    # Periods print in a format that breaks our parsing
+    # So we undo their formatting
+    _stringarg(p::Period) = "$(typeof(p))($(p.value))"
+    _stringarg(arg) = repr(arg)
 end
