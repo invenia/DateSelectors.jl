@@ -106,7 +106,7 @@
             # Interval
             st..ed,
             # AnchoredInterval should include both start and dates
-            AnchoredInterval{Day(31), Date}(st, true, true)
+            AnchoredInterval{Day(31), Date, Closed, Closed}(st)
         )
             result = partition(d, RandomSelector(42))
             @test result.validation == exp.validation
