@@ -25,4 +25,5 @@ makedocs(;
 
 deploydocs(;
     repo="github.com/invenia/DateSelectors.jl",
+    devbranch="main",
 )
