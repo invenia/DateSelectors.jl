@@ -22,7 +22,7 @@ validation
 
 The `RandomSelector` uniformly subsamples the collection of dates and assigns them to the holdout set.
 
-Here we use a seed of `42` to uniformly sample from the  date range with probability 10% into the holdout set,
+Here we use a seed of `42` to uniformly sample from the date range with probability 10% into the holdout set,
 in 3-day blocks, some of which may be contiguous.
 Note that for a given seed and date range the portion in the holdout set may not be exactly 10% as it is a random sample.
 
