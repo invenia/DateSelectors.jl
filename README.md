@@ -1,6 +1,7 @@
 # DateSelectors
 [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://invenia.github.io/DateSelectors.jl/stable)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://invenia.github.io/DateSelectors.jl/dev)
+[![CI](https://github.com/Invenia/DateSelectors.jl/workflows/CI/badge.svg)](https://github.com/Invenia/DateSelectors.jl/actions?query=workflow%3ACI)
 [![code style blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle)
 [![ColPrac: Contributor's Guide on Collaborative Practices for Community Packages](https://img.shields.io/badge/ColPrac-Contributor's%20Guide-blueviolet)](https://github.com/SciML/ColPrac)
 
