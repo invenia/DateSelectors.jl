@@ -1,12 +1,12 @@
 # DateSelectors
-
-[![Latest](https://img.shields.io/badge/docs-latest-blue.svg)](https://invenia.pages.invenia.ca/research/DateSelectors.jl/)
-[![Build Status](https://gitlab.invenia.ca/invenia/research/DateSelectors.jl/badges/master/build.svg)](https://gitlab.invenia.ca/invenia/research/DateSelectors.jl/commits/master)
-[![Coverage](https://gitlab.invenia.ca/invenia/research/DateSelectors.jl/badges/master/coverage.svg)](https://gitlab.invenia.ca/invenia/research/DateSelectors.jl/commits/master)
+[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://invenia.github.io/DateSelectors.jl/stable)
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://invenia.github.io/DateSelectors.jl/dev)
+[![code style blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle)
+[![ColPrac: Contributor's Guide on Collaborative Practices for Community Packages](https://img.shields.io/badge/ColPrac-Contributor's%20Guide-blueviolet)](https://github.com/SciML/ColPrac)
 
 # Usage
 
-`DateSelectors.jl` simplifies the partitioning of a collection of dates into non-contiguous validation and holdout sets in line with [our best practices](TODO add link) for [tuning hyper-parameters](https://gitlab.invenia.ca/invenia/research/sagemakersubmit) in [EIS](https://gitlab.invenia.ca/invenia/eis).
+`DateSelectors.jl` simplifies the partitioning of a collection of dates into non-contiguous validation and holdout sets in line with best practices for tuning hyper-parameters, for time-series machine learning.
 
 The package exports the `partition` function, which assigns dates to the validation and holdout sets according to the `DateSelector`.
 The available `DateSelector`s are:
@@ -14,4 +14,4 @@ The available `DateSelector`s are:
 1. `RandomSelector`: randomly draws a subset of dates _without_ replacement.
 1. `PeriodicSelector`: draws contiguous subsets of days periodically from the collection.
 
-See the [examples](https://invenia.pages.invenia.ca/research/DateSelectors.jl/examples.html) in the docs for more info.
+See the [examples](https://invenia.github.io/DateSelectors.jl/stable) in the docs for more info.
