@@ -16,9 +16,13 @@ makedocs(;
         "API" => "api.md",
         "Examples" => "examples.md"
     ],
-    repo="https://gitlab.invenia.ca/invenia/research/DateSelectors.jl/blob/{commit}{path}#L{line}",
+    repo="https://github.com/invenia/DateSelectors.jl/blob/{commit}{path}#L{line}",
     sitename="DateSelectors.jl",
     authors="Invenia Technical Computing Corporation",
     strict=false,
     checkdocs=:none,
+)
+
+deploydocs(;
+    repo="github.com/invenia/DateSelectors.jl",
 )
