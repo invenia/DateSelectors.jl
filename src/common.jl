@@ -62,9 +62,8 @@ Checks that that initial time is valid for the given `dates`.
 function _initial_date(s::S, dates) where S<: DateSelector
     sd, ed = extrema(dates)
 
-    # The order from FERC that created the US ISO's (the first of their kind) came in 1999
-    # thus seems more than safe to start in 1900, which has the convient feature of
-    # starting on a Monday
+    # We would like to start from over 100 years ago
+    # 1900, which has the convient feature of starting on a Monday
     beginning_of_time = Date(1900)
     initial_time = beginning_of_time + s.offset
     sd < initial_time && throw(DomainError(
