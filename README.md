@@ -15,8 +15,8 @@ The available `DateSelector`s are:
 1. `RandomSelector`: randomly draws a subset of dates _without_ replacement.
 1. `PeriodicSelector`: draws contiguous subsets of days periodically from the collection.
 
-A notable trait of the `DateSelector`s is that the selection is invarent to the start and end-dates of collection itself.
+A notable trait of the `DateSelector`s is that the selection is invariant to the start and end-dates of collection itself.
 Thus you can shift the start and end dates, e.g. by a week, and the days in the overlapping period will consitently still be placed into holdout or validation as before.
-The only thing that controls if a date is selected or not is the parameteros of the `DateSelector` itself.
+The only thing that controls if a date is selected or not is the parameters of the `DateSelector` itself.
 
 See the [examples](https://invenia.github.io/DateSelectors.jl/stable) in the docs for more info.
