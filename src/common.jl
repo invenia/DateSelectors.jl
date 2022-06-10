@@ -28,8 +28,8 @@ Optionally excludes dates in bad_dates.
 """
 function _getdatesets(all_dates, holdout_dates; bad_dates=[])
 
-    all_dates = setdiff(all_dates, bad_dates)
-    holdout_dates = setdiff(holdout_dates, bad_dates)
+    all_dates = filter(!in(bad_dates), all_dates)
+    holdout_dates = filter(!in(bad_dates), holdout_dates)
 
     return (
         validation=sort(setdiff(all_dates, holdout_dates)),

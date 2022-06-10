@@ -33,7 +33,7 @@ struct RandomSelector <: DateSelector
     end
 end
 
-function Iterators.partition(dates::StepRange{Date, Day}, s::RandomSelector; bad_dates=[])
+function Iterators.partition(dates::StepRange{Date, Day}, s::RandomSelector; bad_dates = [])
     sd, ed = extrema(dates)
 
     rng = MersenneTwister(s.seed)

@@ -31,7 +31,7 @@
     end
 
     @testset "random partition" begin
-        dates = unique(rand(date_range, 10))
+        dates = rand(date_range, 10)
         result = DateSelectors._getdatesets(date_range, dates)
 
         @test result.holdout != dates
