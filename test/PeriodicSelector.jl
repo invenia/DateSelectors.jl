@@ -118,4 +118,16 @@
             @test initial_sets.validation ∩ later_sets.holdout == Set()
         end
     end
+
+    @testset "1 week period, 1 day stride, remove the first two holdout dates" begin
+
+        bad_dates = [Date(2019, 1, 1)]
+        selector = PeriodicSelector(Week(1), Day(1), Day(1))
+
+        result = partition(date_range, selector; bad_dates=bad_dates)
+        @test sort(vcat(result...)) == st+Day(1):Day(1):ed
+
+        expected_holdout = [st+Day(7):Week(1):ed...]
+        @test result.holdout == expected_holdout
+    end
 end

@@ -8,7 +8,7 @@ abstract type DateSelector end
 
 
 """
-    partition(dates::AbstractInterval{Date}, s::DateSelector)
+    partition(dates::AbstractInterval{Date}, s::DateSelector; )
     partition(dates::StepRange{Date, Day}, selector::DateSelector)
 
 Partition the set of `dates` into disjoint `validation` and `holdout` sets according to the
@@ -21,18 +21,23 @@ end
 
 
 """
-    _getdatesets(st, ed, dates) -> NamedTuple{(:validation, :holdout)}
+    _getdatesets(st, ed, dates; bad_dates=[]) -> NamedTuple{(:validation, :holdout)}
 
 Construct the NamedTuple of iterators for the validation and holdout date sets.
+Optionally excludes dates in bad_dates.
 """
-function _getdatesets(all_dates, holdout_dates)
+function _getdatesets(all_dates, holdout_dates; bad_dates=[])
+
+    all_dates = setdiff(all_dates, bad_dates)
+    holdout_dates = setdiff(holdout_dates, bad_dates)
+
     return (
         validation=sort(setdiff(all_dates, holdout_dates)),
         holdout=sort(holdout_dates)
     )
 end
 
-_getdatesets(all_dates, date::Date) = _getdatesets(all_dates, [date])
+_getdatesets(all_dates, date::Date; bad_dates=[]) = _getdatesets(all_dates, [date];bad_dates=bad_dates)
 
 """
     _interval2daterange(dates::AbstractInterval{Day}) -> StepRange{Date, Day}

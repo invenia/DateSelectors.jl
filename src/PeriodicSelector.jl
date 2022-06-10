@@ -33,7 +33,7 @@ struct PeriodicSelector <: DateSelector
 end
 
 
-function Iterators.partition(dates::StepRange{Date, Day}, s::PeriodicSelector)
+function Iterators.partition(dates::StepRange{Date, Day}, s::PeriodicSelector; bad_dates=[])
     initial_time = _initial_date(s, dates)
     sd, ed = extrema(dates)
 
@@ -53,5 +53,5 @@ function Iterators.partition(dates::StepRange{Date, Day}, s::PeriodicSelector)
         curr_window = curr_window .+ s.period
     end
 
-    return _getdatesets(dates, holdout_dates)
+    return _getdatesets(dates, holdout_dates; bad_dates=bad_dates)
 end

@@ -33,7 +33,7 @@ struct RandomSelector <: DateSelector
     end
 end
 
-function Iterators.partition(dates::StepRange{Date, Day}, s::RandomSelector)
+function Iterators.partition(dates::StepRange{Date, Day}, s::RandomSelector; bad_dates=[])
     sd, ed = extrema(dates)
 
     rng = MersenneTwister(s.seed)
@@ -57,5 +57,5 @@ function Iterators.partition(dates::StepRange{Date, Day}, s::RandomSelector)
         curr_window = curr_window .+ s.block_size
     end
 
-    return _getdatesets(dates, holdout_dates)
+    return _getdatesets(dates, holdout_dates; bad_dates=bad_dates)
 end
