@@ -119,7 +119,7 @@
         end
     end
 
-    @testset "1 week period, 1 day stride, remove the first two holdout dates" begin
+    @testset "1 week period, 1 day stride, remove the first holdout date" begin
 
         exclude = [Date(2019, 1, 1)]
         selector = PeriodicSelector(Week(1), Day(1), Day(1))

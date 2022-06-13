@@ -81,8 +81,8 @@
 
             # Checking the bad dates are in neither set
             is_bad(date) = in(date, exclude)
-            @test !any(is_bad.(validation))
-            @test !any(is_bad.(holdout))
+            @test !any(is_bad, validation)
+            @test !any(is_bad, holdout)
         end
 
     end
