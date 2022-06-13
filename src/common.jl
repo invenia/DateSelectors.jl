@@ -21,15 +21,15 @@ end
 
 
 """
-    _getdatesets(st, ed, dates; bad_dates=[]) -> NamedTuple{(:validation, :holdout)}
+    _getdatesets(st, ed, dates; exclude=Date[]) -> NamedTuple{(:validation, :holdout)}
 
 Construct the NamedTuple of iterators for the validation and holdout date sets.
-Optionally excludes dates in bad_dates.
+Optionally excludes dates in exclude.
 """
-function _getdatesets(all_dates, holdout_dates; bad_dates=[])
+function _getdatesets(all_dates, holdout_dates; exclude=Date[])
 
-    all_dates = filter(!in(bad_dates), all_dates)
-    holdout_dates = filter(!in(bad_dates), holdout_dates)
+    all_dates = filter(!in(exclude), all_dates)
+    holdout_dates = filter(!in(exclude), holdout_dates)
 
     return (
         validation=sort(setdiff(all_dates, holdout_dates)),
@@ -37,7 +37,7 @@ function _getdatesets(all_dates, holdout_dates; bad_dates=[])
     )
 end
 
-_getdatesets(all_dates, date::Date; bad_dates=[]) = _getdatesets(all_dates, [date];bad_dates=bad_dates)
+_getdatesets(all_dates, date::Date; exclude=Date[]) = _getdatesets(all_dates, [date]; exclude=exclude)
 
 """
     _interval2daterange(dates::AbstractInterval{Day}) -> StepRange{Date, Day}

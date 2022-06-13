@@ -76,11 +76,11 @@
 
         @testset "bad dates" begin
             # Picking some random bad days
-            bad_dates = unique(rand(date_range, 10))
-            validation, holdout = partition(date_range, RandomSelector(42); bad_dates=bad_dates)
+            exclude = unique(rand(date_range, 10))
+            validation, holdout = partition(date_range, RandomSelector(42); exclude=exclude)
 
             # Checking the bad dates are in neither set
-            is_bad(date) = in(date, bad_dates)
+            is_bad(date) = in(date, exclude)
             @test !any(is_bad.(validation))
             @test !any(is_bad.(holdout))
         end
