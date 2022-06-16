@@ -8,7 +8,7 @@ selector = NoneSelector()
 
 validation, holdout = partition(date_range, selector)
 
-validation</code></pre><pre class="documenter-example-output">90-element Array{Date,1}:
+validation</code></pre><pre class="documenter-example-output">90-element Vector{Date}:
  2019-01-01
  2019-01-02
  2019-01-03
@@ -32,7 +32,7 @@ validation</code></pre><pre class="documenter-example-output">90-element Array{D
 
 validation, holdout = partition(date_range, selector)
 
-validation</code></pre><pre class="documenter-example-output">90-element Array{Date,1}:
+validation</code></pre><pre class="documenter-example-output">90-element Vector{Date}:
  2019-01-01
  2019-01-02
  2019-01-03
@@ -56,7 +56,7 @@ validation</code></pre><pre class="documenter-example-output">90-element Array{D
 
 validation, holdout = partition(date_range, selector)
 
-validation</code></pre><pre class="documenter-example-output">64-element Array{Date,1}:
+validation</code></pre><pre class="documenter-example-output">64-element Vector{Date}:
  2019-01-01
  2019-01-02
  2019-01-03
@@ -76,12 +76,12 @@ validation</code></pre><pre class="documenter-example-output">64-element Array{D
  2019-03-26
  2019-03-27
  2019-03-28
- 2019-03-29</pre><p>We can verify that it returned what we expected:</p><pre><code class="language-julia">unique(dayname.(validation))</code></pre><pre class="documenter-example-output">5-element Array{String,1}:
+ 2019-03-29</pre><p>We can verify that it returned what we expected:</p><pre><code class="language-julia">unique(dayname.(validation))</code></pre><pre class="documenter-example-output">5-element Vector{String}:
  &quot;Tuesday&quot;
  &quot;Wednesday&quot;
  &quot;Thursday&quot;
  &quot;Friday&quot;
- &quot;Monday&quot;</pre><pre><code class="language-julia">unique(dayname.(holdout))</code></pre><pre class="documenter-example-output">2-element Array{String,1}:
+ &quot;Monday&quot;</pre><pre><code class="language-julia">unique(dayname.(holdout))</code></pre><pre class="documenter-example-output">2-element Vector{String}:
  &quot;Saturday&quot;
  &quot;Sunday&quot;</pre><h2 id="Using-AbstractIntervals"><a class="docs-heading-anchor" href="#Using-AbstractIntervals">Using AbstractIntervals</a><a id="Using-AbstractIntervals-1"></a><a class="docs-heading-anchor-permalink" href="#Using-AbstractIntervals" title="Permalink"></a></h2><p>You can also specify the date range as an <code>Interval</code>:</p><pre><code class="language-julia">using Intervals
 
@@ -91,7 +91,7 @@ date_range = Date(2018, 1, 1)..Date(2019, 3, 31)
 
 validation, holdout = partition(date_range, selector)
 
-validation</code></pre><pre class="documenter-example-output">325-element Array{Date,1}:
+validation</code></pre><pre class="documenter-example-output">325-element Vector{Date}:
  2018-01-01
  2018-01-02
  2018-01-03
@@ -117,7 +117,7 @@ date_range = AnchoredInterval{Day(90), Date}(Date(2019, 1, 1))
 
 validation, holdout = partition(date_range, selector)
 
-validation</code></pre><pre class="documenter-example-output">64-element Array{Date,1}:
+validation</code></pre><pre class="documenter-example-output">64-element Vector{Date}:
  2019-01-01
  2019-01-02
  2019-01-03
@@ -137,4 +137,4 @@ validation</code></pre><pre class="documenter-example-output">64-element Array{D
  2019-03-26
  2019-03-27
  2019-03-28
- 2019-03-31</pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="api.html">« API</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Friday 22 January 2021 20:18">Friday 22 January 2021</span>. Using Julia version 1.5.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+ 2019-03-31</pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="api.html">« API</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Thursday 16 June 2022 16:04">Thursday 16 June 2022</span>. Using Julia version 1.7.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
