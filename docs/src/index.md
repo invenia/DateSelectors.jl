@@ -1,6 +1,6 @@
 # DateSelectors.jl
 
-`DateSelectors.jl` simplifies the partitioning of a collection of dates into non-contiguous validation and holdout sets in line with our best practice approach for [tuning hyper-parameters](https://gitlab.invenia.ca/invenia/research/sagemakersubmit) in [EIS](https://gitlab.invenia.ca/invenia/eis).
+`DateSelectors.jl` simplifies the partitioning of a collection of dates into non-contiguous validation and holdout sets.
 
 The package exports the `partition` function, which assigns dates to the validation and holdout sets according to the `DateSelector`.
 The available `DateSelector`s are:
