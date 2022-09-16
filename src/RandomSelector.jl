@@ -14,7 +14,7 @@ Note that at the boundries of the partitioned dates the blocks may not be of siz
 `block_size` if they go over the edge -- this is infact the common case.
 """
 struct RandomSelector <: DateSelector
-    seed::Int
+    seed::IntDate
     holdout_fraction::Real
     block_size::DatePeriod
     offset::DatePeriod
@@ -33,7 +33,7 @@ struct RandomSelector <: DateSelector
     end
 end
 
-function Iterators.partition(dates::StepRange{Date, Day}, s::RandomSelector)
+function Iterators.partition(dates::StepRange{Date, Day}, s::RandomSelector; exclude=Date[])
     sd, ed = extrema(dates)
 
     rng = MersenneTwister(s.seed)
@@ -57,5 +57,5 @@ function Iterators.partition(dates::StepRange{Date, Day}, s::RandomSelector)
         curr_window = curr_window .+ s.block_size
     end
 
-    return _getdatesets(dates, holdout_dates)
+    return _getdatesets(dates, holdout_dates; exclude=exclude)
 end

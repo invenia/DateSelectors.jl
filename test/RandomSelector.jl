@@ -73,6 +73,18 @@
                 @test !any(isequal(2), diff(subset))
             end
         end
+
+        @testset "bad dates" begin
+            # Picking some random bad days
+            exclude = unique(rand(date_range, 10))
+            validation, holdout = partition(date_range, RandomSelector(42); exclude=exclude)
+
+            # Checking the bad dates are in neither set
+            is_bad(date) = in(date, exclude)
+            @test !any(is_bad, validation)
+            @test !any(is_bad, holdout)
+        end
+
     end
 
     @testset "Right holdout fraction RandomSelector($seed, $holdout_fraction, $block_size)" for
