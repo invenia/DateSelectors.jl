@@ -32,8 +32,11 @@ struct PeriodicSelector <: DateSelector
     end
 end
 
+function Iterators.partition(dates::AbstractVector{Date}, s::PeriodicSelector)
+    if dates isa StepRange && step(dates) != Day(1)
+        throw(ArgumentError("Expected step range over days, not ($(step(dates)))."))
+    end
 
-function Iterators.partition(dates::StepRange{Date, Day}, s::PeriodicSelector)
     initial_time = _initial_date(s, dates)
     sd, ed = extrema(dates)
 
@@ -43,7 +46,7 @@ function Iterators.partition(dates::StepRange{Date, Day}, s::PeriodicSelector)
     # is still is well under 1/4 second. so keeping it simple
 
     holdout_dates = Date[]
-    curr_window = initial_time:step(dates):(initial_time + s.stride - step(dates))
+    curr_window = initial_time:Day(1):(initial_time + s.stride - Day(1))
     while first(curr_window) <= ed
         # optimization: only creating holdout window if intersect not empty
         if last(curr_window) >= sd

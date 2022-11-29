@@ -31,9 +31,9 @@
         end
     end
 
-    @testset "Vector of days is not allowed" begin
+    @testset "Vector of days is allowed" begin
         date_range = collect(Date(2019, 1, 1):Day(1):Date(2019, 2, 1))
-        @test_throws MethodError partition(date_range, NoneSelector())
+        @test first(partition(date_range, NoneSelector())) == date_range
     end
 
     @testset "Weekly intervals are not allowed" begin
@@ -46,7 +46,7 @@
             PeriodicSelector(Week(2), Week(1)),
             RandomSelector(42),
         )
-            @test_throws MethodError partition(weekly_dates, selector)
+            @test_throws ArgumentError partition(weekly_dates, selector)
         end
     end
 end

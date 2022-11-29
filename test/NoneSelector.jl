@@ -11,5 +11,5 @@
     @test isempty(holdout)
 
     # Test that we can also handle any abstract vector
-    @test_throws MethodError partition(collect(date_range), selector)
+    @test first(partition(collect(date_range), selector)) == validation
 end

@@ -15,7 +15,7 @@
         @test all(isequal(Week(1)), diff(result.holdout))
 
         # Test that we can also handle any abstract vector
-        @test_throws MethodError partition(collect(date_range), selector)
+        @test partition(collect(date_range), selector) == result
     end
 
     @testset "2 week period, 5 day stride" begin

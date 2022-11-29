@@ -46,7 +46,7 @@
         @test result.holdout == result2.holdout
 
         # Test that we can also handle any abstract vector
-        @test_throws MethodError partition(collect(date_range), selector)
+        @test partition(collect(date_range), selector) == result
 
         @testset "holdout fraction" begin
             # Setting holdout_fraction 1 all days leaves the validation set empty
