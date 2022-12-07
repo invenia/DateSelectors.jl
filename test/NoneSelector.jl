@@ -9,4 +9,7 @@
     validation, holdout = partition(date_range, selector)
     @test validation == date_range
     @test isempty(holdout)
+
+    # Test that we can also handle any abstract vector
+    @test first(partition(collect(date_range), selector)) == validation
 end

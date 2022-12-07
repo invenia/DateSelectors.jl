@@ -10,6 +10,7 @@ abstract type DateSelector end
 """
     partition(dates::AbstractInterval{Date}, s::DateSelector)
     partition(dates::StepRange{Date, Day}, selector::DateSelector)
+    partition(dates::AbstractVector{Date}, s::DateSelector)
 
 Partition the set of `dates` into disjoint `validation` and `holdout` sets according to the
 `selector` and return a `NamedTuple({:validation, :holdout})` of iterators.

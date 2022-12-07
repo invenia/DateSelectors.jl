@@ -33,14 +33,18 @@ struct RandomSelector <: DateSelector
     end
 end
 
-function Iterators.partition(dates::StepRange{Date, Day}, s::RandomSelector)
+function Iterators.partition(dates::AbstractVector{Date}, s::RandomSelector)
+    if dates isa StepRange && step(dates) != Day(1)
+        throw(ArgumentError("Expected step range over days, not ($(step(dates)))."))
+    end
+
     sd, ed = extrema(dates)
 
     rng = MersenneTwister(s.seed)
 
     holdout_dates = Date[]
     initial_time = _initial_date(s, dates)
-    curr_window = initial_time:step(dates):(initial_time + s.block_size - step(dates))
+    curr_window = initial_time:Day(1):(initial_time + s.block_size - Day(1))
     while first(curr_window) <= ed
         # Important: we must generate a random number for every block even before the start
         # so that the `rng` state is updated constistently no matter when the start is
