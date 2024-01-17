@@ -42,17 +42,10 @@ Helper function to turn an AbstractInterval into a StepRange taking the inclusiv
 account.
 """
 function _interval2daterange(dates::AbstractInterval{Date})
-    fd = _firstdate(dates)
-    ld =_lastdate(dates)
+    fd = minimum(dates, increment=Day(1))
+    ld = maximum(dates, increment=Day(1))
     return fd:Day(1):ld
 end
-
-# TODO: remove this once https://github.com/invenia/Intervals.jl/issues/137
-# is addressed.
-_firstdate(dates::AbstractInterval{Date,Closed}) = first(dates)
-_firstdate(dates::AbstractInterval{Date,Open}) = first(dates) + Day(1)
-_lastdate(dates::AbstractInterval{Date,<:Bound,Closed}) = last(dates)
-_lastdate(dates::AbstractInterval{Date,<:Bound,Open}) = last(dates) - Day(1)
 
 """
     _initial_date(s::S, dates) where S<: DateSelector
